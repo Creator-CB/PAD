@@ -61,15 +61,21 @@ Rulare servere DW
 DW 1 (port 8001)
 export DW_NAME="DW-1"
 uvicorn dw_server:app --host 0.0.0.0 --port 8001
+<img width="817" height="184" alt="Screenshot 2025-11-19 at 14 51 33" src="https://github.com/user-attachments/assets/6109c6ea-c6c7-4794-9a34-8d03f30f68c9" />
+
 DW 2 (port 8002)
 export DW_NAME="DW-2"
 uvicorn dw_server:app --host 0.0.0.0 --port 8002
+<img width="805" height="108" alt="Screenshot 2025-11-19 at 14 52 01" src="https://github.com/user-attachments/assets/25803004-1bdd-4c39-b3b7-8e5805cdf8ad" />
+
+
 
 Rulare Reverse Proxy
 cd src
 uvicorn proxy_server:app --host 0.0.0.0 --port 9000 --workers 4
 
-  
+  <img width="895" height="302" alt="Screenshot 2025-11-19 at 14 52 31" src="https://github.com/user-attachments/assets/6b12c4c3-f388-4f01-9932-e98991ff1272" />
+
   
   5.Testare funcționalități
 
@@ -79,14 +85,29 @@ curl -X POST http://localhost:9000/employees \
   -d '{"name": "Alice", "role": "Dev", "salary": 15000}'
 Output DW:
 [DW-1] POST /employees -> created id=1
-2. GET JSON – Lista employees
+<img width="575" height="43" alt="Screenshot 2025-11-19 at 14 54 41" src="https://github.com/user-attachments/assets/257669c4-c0d5-4327-8da5-0a35f704bc55" />
+
+
+
+3. GET JSON – Lista employees
 curl "http://localhost:9000/employees?offset=0&limit=10&format=json"
-3. GET XML – Un employee în format XML
+<img width="698" height="46" alt="Screenshot 2025-11-19 at 14 55 43" src="https://github.com/user-attachments/assets/33f2a32e-62bd-4f62-afbc-a63c629c724a" />
+<img width="775" height="230" alt="Screenshot 2025-11-19 at 14 56 02" src="https://github.com/user-attachments/assets/32c096ac-cf03-41de-95a0-36dafc551517" />
+
+
+
+5. GET XML – Un employee în format XML
 curl "http://localhost:9000/employees/1?format=xml"
+<img width="615" height="48" alt="Screenshot 2025-11-19 at 14 56 29" src="https://github.com/user-attachments/assets/6e3e5f0f-29ba-4ba5-867f-d646657cd136" />
+<img width="583" height="58" alt="Screenshot 2025-11-19 at 14 56 48" src="https://github.com/user-attachments/assets/bbcf097f-9a19-4655-b2bd-526b8ef1c456" />
+
+
+
+
 
   
 
-4. Load Balancing demonstrat
+7. Load Balancing demonstrat
 Trimite 4 cereri:
 curl http://localhost:9000/employees
 curl http://localhost:9000/employees
@@ -98,14 +119,30 @@ Log:
 [PROXY] Forward -> DW-1
 [PROXY] Forward -> DW-2
 
-5. Cache demonstrat
+<img width="531" height="144" alt="Screenshot 2025-11-19 at 14 57 24" src="https://github.com/user-attachments/assets/9068dc79-116d-479b-8a47-2404fb0edf1d" />
+<img width="529" height="36" alt="Screenshot 2025-11-19 at 14 58 24" src="https://github.com/user-attachments/assets/3e9afbca-3c73-49e0-af57-bada8c56e8cb" />
+<img width="515" height="48" alt="Screenshot 2025-11-19 at 14 58 33" src="https://github.com/user-attachments/assets/040f24e2-edf0-4c9c-905a-f22dcf53cf00" />
+
+
+
+
+8. Cache demonstrat
 Primul GET:
 [PROXY] Forward GET -> DW-1
 Al doilea GET:
 [PROXY] Cache HIT
-6. Concurență (thread-per-request)
+<img width="576" height="121" alt="Screenshot 2025-11-19 at 14 59 50" src="https://github.com/user-attachments/assets/765f3118-f70d-4cbc-b8e3-3163fbd6f9bb" />
+
+
+
+9. Concurență (thread-per-request)
 sudo apt install apache2-utils
 ab -n 50 -c 10 http://localhost:9000/employees
+
+<img width="1066" height="715" alt="Screenshot 2025-11-19 at 15 00 33" src="https://github.com/user-attachments/assets/5703fb3a-fe1e-41e5-8768-8e8c3d27309f" />
+
+
+
 
 
 !!  Explicații tehnice importante
